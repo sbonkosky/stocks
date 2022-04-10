@@ -1,0 +1,40 @@
+services:
+  influxdb:
+    container_name: influxdb
+    image: "influxdb:latest"
+    restart: always
+    networks:
+      - net
+    ports:
+      - "8086:8086"
+    volumes:
+      - ./influxdb/influxdb2:/var/lib/influxdb2:rw
+    environment: 
+      - DOCKER_INFLUXDB_INIT_MODE=${DOCKER_INFLUXDB_INIT_MODE}
+      - DOCKER_INFLUXDB_INIT_USERNAME=${DOCKER_INFLUXDB_INIT_USERNAME}
+      - DOCKER_INFLUXDB_INIT_PASSWORD=${DOCKER_INFLUXDB_INIT_PASSWORD}
+      - DOCKER_INFLUXDB_INIT_ORG=${DOCKER_INFLUXDB_INIT_ORG}
+      - DOCKER_INFLUXDB_INIT_BUCKET=${DOCKER_INFLUXDB_INIT_BUCKET}
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=${DOCKER_INFLUXDB_INIT_ADMIN_TOKEN}
+  grafana:
+    container_name: grafana
+    image: grafana/grafana-oss:latest
+    restart: always
+    networks:
+      - net
+    ports:
+      - 9000:3000
+    volumes:
+      - ./grafana/lib:/var/lib/grafana:rw
+      - ./grafana/etc:/etc/grafana:rw
+    environment:
+      # Disable Login form or not
+      - GF_AUTH_DISABLE_LOGIN_FORM=true
+      # Allow anonymous authentication or not
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      # Role of anonymous user
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+      # Pass in InfluxDB admin token for provisioning file
+      - INFLUXDB_ADMIN_TOKEN=${DOCKER_INFLUXDB_INIT_ADMIN_TOKEN}
+networks:
+  net:

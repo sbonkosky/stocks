@@ -1,0 +1,18 @@
+apiVersion: 1
+
+# To delete a datasource setup through this config you can use this when compose up is run
+#deleteDatasources:
+#  - name: InfluxDB
+
+datasources:
+  - name: InfluxDB_Stocks
+    type: influxdb
+    access: proxy
+    url: http://influxdb:8086
+    # This database should be mapped to a bucket
+    database: stocks
+    jsonData:
+      httpMode: GET
+      httpHeaderName1: 'Authorization'
+    secureJsonData:
+      httpHeaderValue1: 'Token $INFLUXDB_ADMIN_TOKEN'
