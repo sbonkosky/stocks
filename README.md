@@ -40,3 +40,10 @@ For provisioning the datasource automatically:
 
 https://grafana.com/docs/grafana/latest/datasources/influxdb/provision-influxdb/#influxdb-2x-for-influxql-example
 https://grafana.com/docs/grafana/latest/administration/provisioning/#datasources
+
+
+# E*Trade
+
+You need to login to your account and create a Sandbox API Key/Secret from this link:
+> https://us.etrade.com/etx/ris/apikey
+
